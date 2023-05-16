@@ -82,7 +82,7 @@ const SignIn = () => {
           maxW='xs'
           mx='auto'
           fontSize='sm'>
-          This service is strickly for the registered members of NFVCB
+          This service is strictly for the registered members of NFVCB
           Cooperative Soceity.
         </Text>
         <Text mt='6' textAlign='center' color='green' fontSize='lg'>
@@ -111,7 +111,7 @@ const SignIn = () => {
             <Input
               onChange={(e) => setEmail(e.target.value)}
               type='text'
-              shadow='md'
+              shadow='md' rounded='full'
               placeholder='Enter your email address here'
             />
           </FormControl>
@@ -119,7 +119,7 @@ const SignIn = () => {
             onClick={() => signIn()}
             w='full'
             py='6'
-            mt='8'
+            mt='8' rounded='full'
             fontWeight='light'
             color='#ffa101'
             shadow='md'

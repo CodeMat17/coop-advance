@@ -7,7 +7,7 @@ const LogoWithFrederikaFont = () => {
       display='flex'
       alignItems='center'
       justifyContent='center'
-      bgGradient='linear(to-l, green , #ffa101, #f32ac2)'
+      bgGradient='linear(to-l, #f32ac2, #ffa101, #161f6d)'
       px='1'
       py='1'
       rounded='full'>
@@ -21,7 +21,7 @@ const LogoWithFrederikaFont = () => {
         py='0'>
         <div className={fredericka.className}>
           <Text
-            bgGradient='linear(to-l, #f32ac2, #ffa101, green)'
+            bgGradient='linear(to-l, #f32ac2, #ffa101, #161f6d)'
             bgClip='text'
             fontSize='3xl'
             fontWeight='bold'

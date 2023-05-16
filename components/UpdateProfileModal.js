@@ -79,7 +79,7 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
         w='full'
         fontWeight='light'
         mt='8'
-        colorScheme='green'
+        bg='#00abe1'
         py='6'
         onClick={onOpen}>
         UPDATE PROFILE

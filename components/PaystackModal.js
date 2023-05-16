@@ -20,11 +20,11 @@ const PaystackModal = () => {
         onClick={onOpen}
         w='full'
         rounded='full'
-        //   fontWeight='light'
-        fontSize='lg'
-        bg='green'
+        // fontSize='lg'
+        // fontWeight='light'
+        bg='#00abe1'
         color='white'
-        _hover={{ bg: "blue.900" }}>
+        _hover={{ bg: "blue.600" }}>
         Repay Loan
       </Button>
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
