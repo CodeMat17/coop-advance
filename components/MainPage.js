@@ -45,8 +45,6 @@ const MainPage = ({ id, role, full_name, phone_no, file_no, status }) => {
     if (status === "approved") loanProfile();
   }, [status]);
 
-  console.log("loan data", loanData);
-
   const loanRequest = async () => {
     setLoading(true);
     setNotMatch(false);

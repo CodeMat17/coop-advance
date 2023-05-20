@@ -33,7 +33,7 @@ const MobileDrawer = () => {
     <Box display={{ base: "flex", sm: "none" }}>
       <IconButton
         onClick={onOpen}
-        icon={<HiOutlineMenuAlt3 size={23} />}
+        icon={<HiOutlineMenuAlt3 size={30} />}
         bg='blue.900'
         _hover={{ bg: "blue.600" }}
       />

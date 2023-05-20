@@ -3,35 +3,41 @@ import { fredericka } from "./FrederickaFont";
 
 const LogoWithFrederikaFont = () => {
   return (
-    <Box
-      display='flex'
-      alignItems='center'
-      justifyContent='center'
-      bgGradient='linear(to-l, #f32ac2, #ffa101, #161f6d)'
-      px='1'
-      py='1'
-      rounded='full'>
-      <Box
-        display='flex'
-        alignItems='center'
-        justifyContent='center'
-        bg='white'
-        rounded='full'
-        px='1'
-        py='0'>
-        <div className={fredericka.className}>
-          <Text
-            bgGradient='linear(to-l, #f32ac2, #ffa101, #161f6d)'
-            bgClip='text'
-            fontSize='3xl'
-            fontWeight='bold'
-            textAlign='center'>
-            CA
-          </Text>
-        </div>
-        {/* <Text color='black'>CA</Text> */}
+    <>
+      <Box pos='relative'>
+        <Box
+          bg='yellow.600'
+          color='yellow.600'
+          w='15'
+          fontSize='3xl'
+          transform='rotate(135deg)'
+          p='1'
+          rounded='lg'>
+          CA
+        </Box>
+        <Box
+          pos='absolute'
+          top='0'
+          bg='green.500'
+          opacity='0.6'
+          color='green.500'
+          w='15'
+          fontSize='3xl'
+          p='1'
+          rounded='lg'>
+          CA
+        </Box>
+        <Box
+          pos='absolute'
+          top='0'
+          fontSize='3xl'
+          display='flex'
+          justifyContent='center' color=''
+          p='1'>
+          <div className={fredericka.className}>CA</div>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

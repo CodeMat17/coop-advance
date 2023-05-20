@@ -10,9 +10,32 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import {usePaystackPayment} from 'react-paystack'
 
 const PaystackModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+// const config = {
+//   reference: new Date().getTime().toString(),
+//   email,
+//   amount: amount * 100,
+//   publicKey: "pk_test_01fc1183b5664f5c293f2f729aa4c876f0bfffd6",
+//   metadata: {
+//     email,
+//     amount: amount * 100,
+//     images: JSON.stringify(items.map((item) => item.name)),
+//   },
+//   };
+  
+  const onSuccess = (reference) => {
+    console.log("reference", reference);
+    // router.push("/order-received");
+  };
+
+  // const onClose = () => {
+  //   console.log("Payment Closed");
+  //   alert("Opps, Payment not completed. Please try again");
+  // };
 
   return (
     <Box>
