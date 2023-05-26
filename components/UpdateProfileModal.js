@@ -52,6 +52,7 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
         position: "top",
         isClosable: true,
       });
+       router.replace(router.asPath);
     } catch (error) {
       console.log(error);
       toast({
