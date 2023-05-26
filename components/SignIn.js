@@ -36,6 +36,9 @@ const SignIn = () => {
       setLoading(true);
       const { data, error } = await supabase.auth.signInWithOtp({
         email,
+        options: {
+          emailRedirectTo: "https://www.coop-advance.com.ng",
+        },
       });
       if (error) {
         console.log({ error });
