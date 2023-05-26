@@ -42,6 +42,8 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
       if (error) {
         console.log("err msg", error.message);
         throw error;
+      } else {
+        router.reload(window.location.pathname);
       }
 
       toast({
@@ -52,7 +54,6 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
         position: "top",
         isClosable: true,
       });
-       router.replace(router.asPath);
     } catch (error) {
       console.log(error);
       toast({
@@ -66,8 +67,7 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
     } finally {
       setLoading(false);
       onClose();
-      router.replace(router.asPath)
-      // router.reload(window.location.pathname);
+      router.replace(router.asPath);
     }
   };
 
