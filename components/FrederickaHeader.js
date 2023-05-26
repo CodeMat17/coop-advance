@@ -3,7 +3,9 @@ import { fredericka } from "./FrederickaFont";
 
 const FrederickaHeader = () => {
   return (
-    <div className={fredericka.className}>
+    <div
+      // className={fredericka.className}
+    >
       <Text
         bgGradient='linear(to-l, #f32ac2, #ffa101, #161f6d)'
         bgClip='text'

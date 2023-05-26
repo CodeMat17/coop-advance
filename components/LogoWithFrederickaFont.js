@@ -34,7 +34,9 @@ const LogoWithFrederikaFont = () => {
           display='flex'
           justifyContent='center' color=''
           p='1'>
-          <div className={fredericka.className}>CA</div>
+          <div
+            // className={fredericka.className}
+          >CA</div>
         </Box>
       </Box>
     </>

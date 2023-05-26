@@ -1,17 +1,20 @@
 import { Box, SimpleGrid, Spinner, Text } from "@chakra-ui/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import ApprovedLoanCard from "../../components/admin/ApprovedLoanCard";
 
 const ApprovedLoans = () => {
   const supabase = useSupabaseClient();
+  const user = useUser();
   const [approved, setApproved] = useState(null);
 
   useEffect(() => {
     async function getApprovedLoans() {
       const { data } = await supabase
         .from("loans")
-        .select("id, full_name, phone_no, file_no, amount, created_at, status")
+        .select(
+          "id, full_name, phone_no, file_no, amount, created_at, status, approved_by, updated_at"
+        )
         .range(0, 20)
         .eq("status", "approved");
       setApproved(data);

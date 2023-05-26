@@ -1,17 +1,22 @@
+import Loader from "@/components/Loader";
 import MainPage from "@/components/MainPage";
 import SignIn from "@/components/SignIn";
 import UpdateProfileModal from "@/components/UpdateProfileModal";
 import { Box } from "@chakra-ui/react";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+export default function Home({ session, profiles, loans }) {
   const supabaseClient = useSupabaseClient();
   const user = useUser();
   const userId = user?.id;
-  const [data, setData] = useState(null);
+  const router = useRouter();
+  const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [spinner, setSpinner] = useState(true);
 
   useEffect(() => {
     async function loadData() {
@@ -19,13 +24,19 @@ export default function Home() {
         .from("profiles")
         .select("*")
         .eq("id", userId);
-      setData(data);
+      setProfile(data);
     }
-    // Only run query once user is logged in.
-    if (user) loadData();
-  }, [user]);
 
-  if (!user) return <SignIn />;
+    const timer = setTimeout(() => {
+      setSpinner(false);
+      if (!user) {
+        return <SignIn />;
+      }
+      if (user) loadData();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [user]);
 
   return (
     <>
@@ -38,23 +49,31 @@ export default function Home() {
       <main>
         <Box w='full' minH='80vh'>
           <Box maxW='sm' mx='auto' pt='12'>
-            <Box>
+            {spinner ? (
+              <Loader />
+            ) : (
               <>
-                {data &&
-                  data.map((item) => (
-                    <div key={item.id}>
-                      {item.full_name === null ? (
-                        <UpdateProfileModal
-                          userEmail={user.email}
-                          userId={user.id}
-                        />
-                      ) : (
-                        <MainPage {...item} />
-                      )}
-                    </div>
-                  ))}
+                {!user ? (
+                  <SignIn />
+                ) : (
+                  <>
+                    {profile &&
+                      profile.map((item) => (
+                        <div key={item.id}>
+                          {item.full_name === null ? (
+                            <UpdateProfileModal
+                              userEmail={user.email}
+                              userId={user.id}
+                            />
+                          ) : (
+                            <MainPage {...item} loans={loans} />
+                          )}
+                        </div>
+                      ))}
+                  </>
+                )}
               </>
-            </Box>
+            )}
           </Box>
         </Box>
       </main>
@@ -62,23 +81,36 @@ export default function Home() {
   );
 }
 
-// export const getServerSideProps = async (ctx) => {
-//   // Create authenticated Supabase Client
-//   const supabase = createServerSupabaseClient(ctx);
+export const getServerSideProps = async (ctx) => {
+  // Create authenticated Supabase Client
+  const supabase = createServerSupabaseClient(ctx);
 
-//   // Check if we have a session
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-//   const userId = user?.id;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   const { data } = await supabase.from("profiles").select("*").eq("id", userId);
+  const userId = user?.id;
 
-//   return {
-//     props: {
-//       user,
-//       profile: data ?? [],
-//     },
-//   };
-// };
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId);
+  const { data: loans } = await supabase
+    .from("loans")
+    .select("*")
+    .eq("user_id", userId);
+
+  return {
+    props: {
+      session,
+      user,
+      profiles,
+      loans,
+    },
+  };
+};

@@ -16,11 +16,19 @@ import {
 } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ApprovedLoanCard from "./ApprovedLoanCard";
 import FrederickaHeader from "./FrederickaHeader";
 
-const MainPage = ({ id, role, full_name, phone_no, file_no, status }) => {
+const MainPage = ({
+  id,
+  role,
+  full_name,
+  phone_no,
+  file_no,
+  status,
+  loans,
+}) => {
   const supabase = useSupabaseClient();
 
   const toast = useToast();
@@ -33,17 +41,17 @@ const MainPage = ({ id, role, full_name, phone_no, file_no, status }) => {
   const [loading, setLoading] = useState(false);
   const [loanData, setLoanData] = useState();
 
-  useEffect(() => {
-    const loanProfile = async () => {
-      let { data: loans } = await supabase
-        .from("loans")
-        .select("*")
-        .eq("user_id", id);
-      setLoanData(loans);
-    };
-    // Only run query once status === approved.
-    if (status === "approved") loanProfile();
-  }, [status]);
+  // useEffect(() => {
+  //   const loanProfile = async () => {
+  //     let { data: loans } = await supabase
+  //       .from("loans")
+  //       .select("*")
+  //       .eq("user_id", id);
+  //     setLoanData(loans);
+  //   };
+  //   // Only run query once status === approved.
+  //   if (status === "approved") loanProfile();
+  // }, [status]);
 
   const loanRequest = async () => {
     setLoading(true);
@@ -220,28 +228,10 @@ const MainPage = ({ id, role, full_name, phone_no, file_no, status }) => {
           <Text textAlign='center' textTransform='uppercase'>
             application status: Approved
           </Text>
-          {loanData &&
-            loanData.map((data) => (
-              <ApprovedLoanCard key={data.id} {...data} />
-            ))}
+          {loans &&
+            loans.map((loan) => <ApprovedLoanCard key={loan.id} {...loan} />)}
         </>
-        // <Box
-        //   shadow='lg'
-        //   mt='4'
-        //   py='6'
-        //   px='4'
-        //   bg='gray.50'
-        //   border='1px'
-        //   borderColor='gray.200'
-        //   rounded='lg'>
-        //   <Text textAlign='center' textTransform='uppercase'>
-        //     application status: Approved
-        //   </Text>
-        //   {loanData &&
-        //     loanData.map((data) => (
-        //       <ApprovedLoanCard key={data.id} {...data} />
-        //     ))}
-        // </Box>
+     
       )}
     </Box>
   );

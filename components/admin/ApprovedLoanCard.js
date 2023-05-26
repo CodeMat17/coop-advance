@@ -11,22 +11,14 @@ const ApprovedLoanCard = ({
   approved_by,
 }) => {
   return (
-    <Box
-      fontSize='sm'
-    w='full'
-      // mx='auto'
-      bg='green.100'
-      rounded='lg'
-      p='4'
-      // mt='4'
-      shadow='md'>
+    <Box fontSize='sm' w='full' bg='green.100' rounded='lg' p='4' shadow='md'>
       <Text>Name: {full_name}</Text>
       <Text>File no: {file_no}</Text>
       <Text>Phone no: {phone_no}</Text>
       <Text>Amount: ₦{amount}</Text>
       <Text>Requested on: {dayjs(created_at).format(" MMM D, YYYY")}</Text>
       <Text>Approved on: {dayjs(updated_at).format(" MMM D, YYYY")}</Text>
-      <Text>Approved by: {approved_by}</Text>
+      <Text>Approved by:  {approved_by}</Text>
     </Box>
   );
 };

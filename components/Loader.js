@@ -22,7 +22,7 @@ const Loader = () => {
       minH='80vh'
       display='flex'
       flexDir='column'
-      pt='20'
+      pt='12'
       alignItems='center'>
       <Box
         pos='relative'
@@ -32,12 +32,12 @@ const Loader = () => {
         justifyContent='center'>
         <Image
           alt='loader'
-          w='200px'
-          h='200px'
+          w='150px'
+          h='150px'
           src='/loader.webp'
           animation={animation}
         />
-        <Text pos='absolute' bottom='4' textAlign='center'>
+        <Text pos='absolute' bottom='0' textAlign='center' fontSize='sm'>
           Please wait
         </Text>
       </Box>

@@ -65,7 +65,8 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
     } finally {
       setLoading(false);
       onClose();
-      router.reload(window.location.pathname);
+      router.replace(router.asPath)
+      // router.reload(window.location.pathname);
     }
   };
 

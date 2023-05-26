@@ -39,11 +39,19 @@ const SignIn = () => {
       });
       if (error) {
         console.log({ error });
-        setError(error);
-      } else if (data) {
+        setError(error.error_description || error.message);
         toast({
-          title: "Received!",
-          description: "Check your email for your log-in link.",
+          title: "Sent!",
+          description: 'Something went wrong!',
+          status: "error",
+          duration: 4000,
+          position: "top",
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Sent!",
+          // description: '',
           status: "success",
           duration: 3000,
           position: "top",
@@ -64,7 +72,7 @@ const SignIn = () => {
           height={200}
           src='/new-message.svg'
         />
-        <Text pt='2' textAlign='center'>
+        <Text pt='2' textAlign='center' maxW='md' mx='auto'>
           Please check your email for a magic link to log in.
         </Text>
       </Box>
@@ -72,11 +80,10 @@ const SignIn = () => {
   }
 
   return (
-    <Box px='4' py='12' maxW='sm' mx='auto'>
+    <Box px='4' py='12' maxW='md' mx='auto'>
       <Box>
         <FrederickaHeader />
         <Text
-          mt=''
           textAlign='center'
           color='gray'
           maxW='xs'
@@ -85,7 +92,7 @@ const SignIn = () => {
           This service is strictly for the registered members of NFVCB
           Cooperative Soceity.
         </Text>
-        <Text mt='6' textAlign='center' color='green' fontSize='lg'>
+        <Text mt='12' textAlign='center' color='green' fontSize='lg'>
           Sign in / Sign up
         </Text>
 
@@ -99,7 +106,7 @@ const SignIn = () => {
             color='red.500'
             fontSize='sm'
             fontWeight='light'>
-            {error.message}
+            {error.error_description || error.message}
           </Box>
         )}
 

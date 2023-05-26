@@ -1,44 +1,36 @@
 import { Box, Spinner, Text } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import VerifyUserCard from "./VerifyUserCard";
 
-const VerifyUser = () => {
+const VerifyUser = ({ profiles }) => {
   const supabase = useSupabaseClient();
   const user = useUser();
 
   const [verifyUser, setVerifyUser] = useState(null);
 
-  useEffect(() => {
-    // async function getData() {
-    //   const { data } = await supabase
-    //     .from("profiles")
-    //     .select("id, full_name, phone_no, email,file_no, role")
-    //     .is("role", null);
-    //   setVerifyUser(data);
-    // }
-    // Only run query once user is logged in.
-     if (user) getData();
-  }, [user]);
+  // useEffect(() => {
+  //     getData();
+  // }, []);
 
-  async function getData() {
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, full_name, phone_no, email,file_no, role")
-      .is("role", null);
-    setVerifyUser(data);
-  }
+  // async function getData() {
+  //   const { data } = await supabase
+  //     .from("profiles")
+  //     .select("id, full_name, phone_no, email,file_no, role")
+  //     .is("role", null);
+  //   setVerifyUser(data);
+  // }
 
   return (
     <Box>
-      {!verifyUser ? (
+      {!profiles ? (
         <Box display='flex' flexDir='column' alignItems='center' py='8'>
           <Spinner />
           <Text mt='2'>Loading</Text>
         </Box>
       ) : (
         <>
-          {verifyUser && verifyUser.length <= 0 ? (
+          {profiles && profiles.length <= 0 ? (
             <Text px='4' py='12' textAlign='center'>
               No pending user for verification.
             </Text>
@@ -51,8 +43,18 @@ const VerifyUser = () => {
                 fontWeight='semibold'>
                 VERIFY MEMBERS
               </Text>
-              {verifyUser.map((user) => (
-                <VerifyUserCard key={user.id} {...user} detData={getData()} />
+              {profiles.map((user) => (
+                <Box key={user.id}>
+                  {user.role === null &&
+                    <VerifyUserCard
+                      id={user.id}
+                      full_name={user.full_name}
+                      file_no={user.file_no}
+                      phone_no={user.phone_no}
+                      email={user.email}
+                    />
+                  }
+                </Box>
               ))}
             </>
           )}
