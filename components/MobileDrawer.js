@@ -13,14 +13,16 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { fredericka } from "./FrederickaFont";
 
 const MobileDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const supabaseClient = useSupabaseClient();
+  const user = useUser();
   const router = useRouter();
 
   const gotoHome = () => {
@@ -43,6 +45,21 @@ const MobileDrawer = () => {
     onClose();
     router.push("/");
   };
+
+  const [checkIsAdmin, setCheckIsAdmin] = useState([]);
+
+  useEffect(() => {
+    const checkIsAdmin = async () => {
+      const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("isAdmin, id")
+        .eq("id", user.id);
+      if (!error) {
+        setCheckIsAdmin(data);
+      }
+    };
+    if (user) checkIsAdmin();
+  }, [user]);
 
   return (
     <Box display={{ base: "flex", sm: "none" }}>
@@ -70,13 +87,21 @@ const MobileDrawer = () => {
           </DrawerHeader>
 
           <DrawerBody>
-            <Stack spacing='24px'>
+            <Stack spacing='24px' pt='6'>
               <Button onClick={gotoHome} size='lg' color='green'>
                 HOME
               </Button>
-              <Button onClick={gotoAdmin} size='lg' color='green'>
-                ADMIN
-              </Button>
+              {checkIsAdmin &&
+                checkIsAdmin.map((user) => (
+                  <div key={user.id}>
+                    {user.isAdmin && (
+                      <Button onClick={gotoAdmin} size='lg' color='green'>
+                        ADMIN
+                      </Button>
+                    )}
+                  </div>
+                ))}
+
               <Button onClick={gotoRepay} size='lg' color='green'>
                 REPAY LOAN
               </Button>
@@ -90,9 +115,11 @@ const MobileDrawer = () => {
             <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={signOut} colorScheme='red'>
-              Sign out
-            </Button>
+            {user && (
+              <Button onClick={signOut} colorScheme='red'>
+                Sign out
+              </Button>
+            )}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
