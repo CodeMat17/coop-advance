@@ -88,21 +88,25 @@ const MobileDrawer = () => {
 
           <DrawerBody>
             <Stack spacing='24px' pt='6'>
-              <Button onClick={gotoHome} size='lg' color='green'>
+              <Button onClick={gotoHome} w='full' size='lg' color='green'>
                 HOME
               </Button>
               {checkIsAdmin &&
                 checkIsAdmin.map((user) => (
                   <div key={user.id}>
                     {user.isAdmin && (
-                      <Button onClick={gotoAdmin} size='lg' color='green'>
+                      <Button
+                        onClick={gotoAdmin}
+                        w='full'
+                        size='lg'
+                        color='green'>
                         ADMIN
                       </Button>
                     )}
                   </div>
                 ))}
 
-              <Button onClick={gotoRepay} size='lg' color='green'>
+              <Button onClick={gotoRepay} w='full' size='lg' color='green'>
                 REPAY LOAN
               </Button>
               {/* <Box my='4'>
