@@ -29,7 +29,7 @@ const Loader = () => {
         display='flex'
         flexDir='column'
         alignItems='center'
-        justifyContent='center'>
+        justifyContent='center' >
         <Image
           alt='loader'
           w='150px'

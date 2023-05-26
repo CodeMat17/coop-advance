@@ -41,8 +41,8 @@ export default function Home({ session, profiles, loans }) {
   return (
     <>
       <Head>
-        <title>Coop Loan</title>
-        <meta name='description' content='NFVCB Cooperative Loan App' />
+        <title>Coop Advance</title>
+        <meta name='description' content='NFVCB Cooperative Loan Advance App' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>

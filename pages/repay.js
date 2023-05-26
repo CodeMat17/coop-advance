@@ -67,7 +67,7 @@ const Repay = () => {
   };
 
   return (
-    <Box maxW='sm' mx='auto' py='20'>
+    <Box maxW='sm' mx='auto' py='20' px='8'>
       <Text textAlign='center' fontSize='xl'>
         You want to repay your loan?
       </Text>

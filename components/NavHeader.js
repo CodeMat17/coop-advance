@@ -57,7 +57,7 @@ const NavHeader = () => {
               borderBottom: "2px",
               borderBottomColor: "gray.200",
             }}>
-            Home
+            HOME
           </Button>
           <>
             {checkIsAdmin &&
@@ -78,7 +78,7 @@ const NavHeader = () => {
                         borderBottom: "2px",
                         borderBottomColor: "gray.200",
                       }}>
-                      Admin
+                      ADMIN
                     </Button>
                   )}
                 </div>
@@ -99,7 +99,7 @@ const NavHeader = () => {
               borderBottom: "2px",
               borderBottomColor: "gray.200",
             }}>
-            Repay Loan
+            REPAY LOAN
           </Button>
           {/* <Box mr='4'>
             <PaystackModal />

@@ -17,15 +17,30 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { fredericka } from "./FrederickaFont";
-import PaystackModal from "./PaystackModal";
 
 const MobileDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const supabaseClient = useSupabaseClient();
   const router = useRouter();
 
+  const gotoHome = () => {
+    router.push("/");
+    onClose();
+  };
+
+  const gotoAdmin = () => {
+    router.push("/admin");
+    onClose();
+  };
+
+  const gotoRepay = () => {
+    router.push("/repay");
+    onClose();
+  };
+
   const signOut = async () => {
     await supabaseClient.auth.signOut();
+    onClose();
     router.push("/");
   };
 
@@ -56,9 +71,18 @@ const MobileDrawer = () => {
 
           <DrawerBody>
             <Stack spacing='24px'>
-              <Box my='4'>
+              <Button onClick={gotoHome} size='lg' color='green'>
+                HOME
+              </Button>
+              <Button onClick={gotoAdmin} size='lg' color='green'>
+                ADMIN
+              </Button>
+              <Button onClick={gotoRepay} size='lg' color='green'>
+                REPAY LOAN
+              </Button>
+              {/* <Box my='4'>
                 <PaystackModal />
-              </Box>
+              </Box> */}
             </Stack>
           </DrawerBody>
 
@@ -66,7 +90,7 @@ const MobileDrawer = () => {
             <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={signOut} colorScheme='green'>
+            <Button onClick={signOut} colorScheme='red'>
               Sign out
             </Button>
           </DrawerFooter>
