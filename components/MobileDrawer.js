@@ -109,9 +109,7 @@ const MobileDrawer = () => {
               <Button onClick={gotoRepay} w='full' size='lg' color='green'>
                 REPAY LOAN
               </Button>
-              {/* <Box my='4'>
-                <PaystackModal />
-              </Box> */}
+            
             </Stack>
           </DrawerBody>
 
