@@ -1,7 +1,4 @@
-import Loader from "@/components/Loader";
-import MainPage from "@/components/MainPage";
 import SignIn from "@/components/SignIn";
-import UpdateProfileModal from "@/components/UpdateProfileModal";
 import { Box } from "@chakra-ui/react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
@@ -48,7 +45,17 @@ export default function Home({ session, profiles, loans }) {
       </Head>
       <main>
         <Box w='full' minH='80vh'>
-          <Box maxW='sm' mx='auto' pt='12'>
+          <Box
+            px='8'
+            py='20'
+            maxW='md'
+            mx='auto'
+            textAlign='center'
+            fontSize='lg'>
+            This page is on maintenance. Kindly sit back and wait for the next
+            announcement.
+          </Box>
+          {/* <Box maxW='sm' mx='auto' pt='12'>
             {spinner ? (
               <Loader />
             ) : (
@@ -74,7 +81,7 @@ export default function Home({ session, profiles, loans }) {
                 )}
               </>
             )}
-          </Box>
+          </Box> */}
         </Box>
       </main>
     </>
