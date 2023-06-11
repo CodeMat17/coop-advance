@@ -2,7 +2,7 @@ import { Box, Text, chakra } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 
-const ApprovedLoanCard = ({ amount, updated_at }) => {
+const ApprovedLoanCard = ({ amount, approved_on }) => {
   const intAmount = parseInt(amount)
   
   const formattedAmount = intAmount.toLocaleString("en-US",
@@ -30,7 +30,7 @@ const ApprovedLoanCard = ({ amount, updated_at }) => {
       </Box>
       <Box bg='green.500' p='4' color='white'>
         <Text>Amount: {formattedAmount}</Text>
-        <Text>Approved On: {dayjs(updated_at).format(" MMM D, YYYY")}</Text>
+        <Text>Approved On: {dayjs(approved_on).format(" MMM D, YYYY")}</Text>
         <Text>Loan Duration: 3 Months from approval date</Text>
         <Text textAlign='center' mt=''>
           😋{" "}
