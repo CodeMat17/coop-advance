@@ -71,7 +71,9 @@ const MainPage = ({
           .upsert({
             user_id: id,
             amount,
-            // ippis_no: ippisno,
+            ippis_no,
+            location,
+            phone_no,
             full_name,
           })
           .select();

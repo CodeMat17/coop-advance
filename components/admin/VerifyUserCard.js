@@ -8,7 +8,7 @@ const VerifyUserCard = ({
   id,
   email,
   verify,
-  // file_no,
+  location,
   phone_no,
   // getData,
 }) => {
@@ -48,7 +48,7 @@ const VerifyUserCard = ({
       shadow='lg'>
       <Text>Name: {full_name}</Text>
       <Text>Email: {email}</Text>
-      {/* <Text>File No: {file_no}</Text> */}
+      <Text>Zone/Centre: {location}</Text>
       <Text>Phone No: {phone_no}</Text>
       <Button
         onClick={verifyUser}

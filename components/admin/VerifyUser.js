@@ -25,7 +25,7 @@ const VerifyUser = ({ profiles }) => {
               <VerifyUserCard
                 id={user.id}
                 full_name={user.full_name}
-                // file_no={user.ippis_no}
+                location={user.location}
                 phone_no={user.phone_no}
                 email={user.email}
               />

@@ -129,11 +129,13 @@ export const getServerSideProps = async (ctx) => {
   const { data: profiles } = await supabase
     .from("profiles")
     .select("*")
-    .is("verify", null);
+    .is("verify", null)
+    .order("created_at", { ascending: false });
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
+     .order("created_at", { ascending: false })
     .eq("id", userId);
 
   const { data: loans } = await supabase
