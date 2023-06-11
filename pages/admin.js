@@ -15,138 +15,95 @@ import {
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
-const Admin = ({ session, profiles, profile, loans }) => {
+const Admin = ({ session, profile, profiles, loans }) => {
   const router = useRouter();
   const supabase = useSupabaseClient();
   const user = useUser();
   const userId = user?.id;
 
-  // const [profiles, setProfiles] = useState(null);
-  const [spinner, setSpinner] = useState(true);
-
-  useEffect(() => {
-    // async function loadData() {
-    //   const { data } = await supabaseClient
-    //     .from("profiles")
-    //     .select("*")
-    //     .eq("id", userId);
-    //   setData(data);
-    // }
-
-    const timer = setTimeout(() => {
-      setSpinner(false);
-      if (!session) {
-        router.push("/sign-in");
-      }
-
-      // Only run query once user is logged in.
-      // if (session) loadData();
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [session]);
-
-  // useEffect(() => {
-  //   async function getProfile() {
-  //     const { data } = await supabase
-  //       .from("profiles")
-  //       .select("id, full_name, isAdmin")
-  //       .eq("id", userId);
-  //     setProfiles(data);
-  //   }
-  //   // Only run query once user is logged in.
-  //   getProfile();
-  // }, []);
+  // const [profile, setProfile] = useState(null);
 
   return (
     <Box px='4' py='8'>
       <>
-        {spinner ? (
-          <Box display='flex' justifyContent='center' py='12'>
-            <Spinner size='lg' />
+        {profile === "null" && (
+          <Box
+            my='16'
+            display='flex'
+            flexDir='column'
+            alignItems='center'
+            justifyContent='center'>
+            <Spinner />
+            <Text mt='2'>Please wait</Text>
           </Box>
-        ) : (
-          <>
-            {profile === "null" && (
-              <Box
-                my='16'
-                display='flex'
-                flexDir='column'
-                alignItems='center'
-                justifyContent='center'>
-                <Spinner />
-                <Text mt='2'>Please wait</Text>
-              </Box>
-            )}
-            {profile &&
-              profile?.map((item) => (
-                <Box key={item.id}>
-                  {!item.isAdmin ? (
-                    <Box
-                      py='16'
-                      px='4'
-                      maxW='md'
-                      mx='auto'
+        )}
+
+        {profile &&
+          profile?.map((item) => (
+            <Box key={item.id}>
+              {!item.isAdmin ? (
+                <Box
+                  py='16'
+                  px='4'
+                  maxW='md'
+                  mx='auto'
+                  display='flex'
+                  flexDir='column'
+                  justifyContent='center'
+                  textAlign='center'>
+                  <Text fontSize='xl'>
+                    Are you sure you are an Administrator here?
+                  </Text>
+                  <Text pt='4'>
+                    I doubt if you are. Please{" "}
+                    <chakra.span
+                      color='blue'
+                      cursor='pointer'
+                      bg='blue.100'
+                      rounded='full'
+                      px='1'
+                      onClick={() => router.push("/")}>
+                      go back
+                    </chakra.span>{" "}
+                    if you are not or contact the admin if you are and cannot
+                    have access to admin content.
+                  </Text>
+                </Box>
+              ) : (
+                <Box>
+                  <Text textAlign='center' fontSize='2xl'>
+                    Admin Dashboard
+                  </Text>
+                  <Box mt='4'>
+                    <Tabs
                       display='flex'
                       flexDir='column'
-                      justifyContent='center'
-                      textAlign='center'>
-                      <Text fontSize='xl'>
-                        Are you sure you are an Administrator here?
-                      </Text>
-                      <Text pt='4'>
-                        I doubt if you are. Please{" "}
-                        <chakra.span
-                          color='blue'
-                          cursor='pointer'
-                          bg='blue.100'
-                          rounded='full'
-                          px='1'
-                          onClick={() => router.push("/")}>
-                          go back
-                        </chakra.span>{" "}
-                        if you are not or contact the admin if you are and
-                        cannot have access to admin content.
-                      </Text>
-                    </Box>
-                  ) : (
-                    <Box>
-                      <Text textAlign='center' fontSize='2xl'>
-                        Admin Dashboard
-                      </Text>
-                      <Box mt='4'>
-                        <Tabs
-                          display='flex'
-                          flexDir='column'
-                          alignItems='center'
-                          justifyContent='center'>
-                          <TabList>
-                            <Tab>Verify</Tab>
-                            <Tab>Request</Tab>
-                            <Tab>Approved</Tab>
-                          </TabList>
+                      alignItems='center'
+                      justifyContent='center'>
+                      <TabList>
+                        <Tab>Verify</Tab>
+                        <Tab>Request</Tab>
+                        <Tab>Approved</Tab>
+                      </TabList>
 
-                          <TabPanels>
-                            <TabPanel>
-                              <VerifyUser profiles={profiles} />
-                            </TabPanel>
-                            <TabPanel>
-                              <LoanRequest loans={loans} />
-                            </TabPanel>
-                            <TabPanel>
-                              <ApprovedLoans loans={loans} />
-                            </TabPanel>
-                          </TabPanels>
-                        </Tabs>
-                      </Box>
-                    </Box>
-                  )}
+                      <TabPanels>
+                        <TabPanel>
+                          <VerifyUser profiles={profiles} />
+                        </TabPanel>
+                        <TabPanel>
+                          <LoanRequest loans={loans} />
+                        </TabPanel>
+                        <TabPanel>
+                          <ApprovedLoans  />
+                        </TabPanel>
+                      </TabPanels>
+                    </Tabs>
+                  </Box>
                 </Box>
-              ))}
-          </>
-        )}
+              )}
+            </Box>
+          ))}
       </>
     </Box>
   );
@@ -169,14 +126,20 @@ export const getServerSideProps = async (ctx) => {
 
   const userId = user?.id;
 
-  const { data: profiles } = await supabase.from("profiles").select("*");
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("*")
+    .is("verify", null);
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", userId);
 
-  const { data: loans } = await supabase.from("loans").select("*");
+  const { data: loans } = await supabase
+    .from("loans")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   return {
     props: {

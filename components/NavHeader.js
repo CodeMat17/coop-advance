@@ -32,16 +32,16 @@ const NavHeader = () => {
   };
 
   return (
-    <Box bg='#161f6d' py='4' pl='6' pr='3' pos='sticky' top='0' zIndex='60'>
-      <Box
+    <Box bg='#161f6d' pr='3' pos='sticky' top='0' zIndex='60'>
+      <Box maxW='6xl' mx='auto'
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        color='white'>
+        color='white' >
         <LogoWithFrederikaFont />
 
         <MobileDrawer />
-        <Box display={{ base: "none", sm: "flex" }}>
+        <Box display={{ base: "none", md: "flex" }}>
           <Button
             onClick={() => router.push("/")}
             ml='2'
@@ -53,7 +53,7 @@ const NavHeader = () => {
             borderBottom='0.5px'
             borderBottomColor='gray.800'
             _hover={{
-              bg: "#00abe1",
+              bg: "blue.700",
               borderBottom: "2px",
               borderBottomColor: "gray.200",
             }}>
@@ -74,7 +74,7 @@ const NavHeader = () => {
                       borderBottom='0.5px'
                       borderBottomColor='gray.800'
                       _hover={{
-                        bg: "#00abe1",
+                        bg: "blue.700",
                         borderBottom: "2px",
                         borderBottomColor: "gray.200",
                       }}>
@@ -95,7 +95,7 @@ const NavHeader = () => {
             borderBottom='0.5px'
             borderBottomColor='gray.800'
             _hover={{
-              bg: "#00abe1",
+              bg: "blue.700",
               borderBottom: "2px",
               borderBottomColor: "gray.200",
             }}>

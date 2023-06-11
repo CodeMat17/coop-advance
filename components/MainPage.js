@@ -15,6 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import ApprovedLoanCard from "./ApprovedLoanCard";
@@ -22,12 +23,13 @@ import FrederickaHeader from "./FrederickaHeader";
 
 const MainPage = ({
   id,
-  role,
+  verify,
   full_name,
   phone_no,
-  file_no,
+  ippis_no,
+  location,
   status,
-  loans,
+  loan,
 }) => {
   const supabase = useSupabaseClient();
 
@@ -36,7 +38,7 @@ const MainPage = ({
   const format = (val) => `₦` + val;
   const parse = (val) => val.replace(/^\₦/, "");
   const [amount, setAmount] = useState(0.0);
-  const [fileno, setFileno] = useState("");
+  const [ippisno, setIPPISno] = useState("");
   const [notMatch, setNotMatch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loanData, setLoanData] = useState();
@@ -57,23 +59,22 @@ const MainPage = ({
     setLoading(true);
     setNotMatch(false);
 
-    if (fileno != file_no) {
+    if (ippisno != ippis_no) {
       setNotMatch(true);
       setLoading(false);
     }
 
-    if (fileno === file_no) {
+    if (ippisno === ippis_no) {
       try {
-        const { error } = await supabase.from("loans").upsert([
-          {
+        const { error } = await supabase
+          .from("loans")
+          .upsert({
             user_id: id,
             amount,
-            file_no: fileno,
+            // ippis_no: ippisno,
             full_name,
-            phone_no,
-            status: "processing",
-          },
-        ]);
+          })
+          .select();
         await supabase
           .from("profiles")
           .update({ status: "processing" })
@@ -103,21 +104,44 @@ const MainPage = ({
   return (
     <Box px='4' pb='20'>
       <FrederickaHeader />
-
       {status === "inactive" && (
         <>
-          {role === null && (
-            <>
-              <Text key={id} textAlign='center'>
-                Welcome {full_name}, to be eligible for a loan request, kindly
-                contact the Admin for verification.
+          {verify === null && (
+            <Box
+              key={id}
+              maxW='sm'
+              mx='auto'
+              display='flex'
+              flexDir='column'
+              justifyContent='center'
+              alignItems='center'>
+              <Box
+                pos='relative'
+                display='flex'
+                justifyContent='center'
+                alignItems='center'>
+                <Image alt='' width={250} height={250} src='/welcome.svg' />
+                <Text
+                  pos='absolute'
+                  bottom='1'
+                  bg='#a99edb'
+                  px='4'
+                  py='1'
+                  rounded='full'
+                  opacity='0.9'>
+                  {full_name}
+                </Text>
+              </Box>
+              <Text textAlign='center' mt='2'>
+                Your registration is complete. To apply for advance, kindly
+                contact the admin for membership verification.
               </Text>
-            </>
+            </Box>
           )}
-          {role === "verified" && (
+          {verify === "verified" && (
             <Box maxW='xs' mx='auto'>
               <Text textAlign='center'>
-                Please enter your loan request details below.
+                Enter your loan advance request details below.
               </Text>
               {notMatch && (
                 <Box
@@ -131,8 +155,8 @@ const MainPage = ({
                   py='4'
                   mt='2'
                   rounded='lg'>
-                  <Text>File No. mismatch</Text>
-                  <Text>Check your file no. and try again</Text>
+                  <Text>IPPIS No. mismatch</Text>
+                  <Text>Check your IPPIS no. and try again</Text>
                 </Box>
               )}
               <FormControl mt='8' mb='6'>
@@ -144,7 +168,7 @@ const MainPage = ({
                   onChange={(amountString) => setAmount(parse(amountString))}
                   value={format(amount)}
                   step={5000}
-                  precision={2}
+                  // precision={2}
                   defaultValue={5000}
                   min={5000}
                   max={50000}>
@@ -171,12 +195,12 @@ const MainPage = ({
               </FormControl>
               <FormControl mb='4'>
                 <FormLabel fontSize='sm' mb='0' color='gray'>
-                  Enter File No.
+                  IPPIS No.
                 </FormLabel>
                 <Input
-                  placeholder='Enter your file No. here'
-                  value={fileno}
-                  onChange={(e) => setFileno(e.target.value)}
+                  placeholder='Enter your IPPIS No. here'
+                  value={ippisno}
+                  onChange={(e) => setIPPISno(e.target.value)}
                 />
               </FormControl>
               <Text fontSize='xs' lineHeight='3' mb='2' fontWeight='light'>
@@ -195,7 +219,12 @@ const MainPage = ({
               <Button
                 onClick={loanRequest}
                 isLoading={loading}
-                isDisabled={!amount || !file_no || file_no.length < 3}
+                isDisabled={
+                  !amount ||
+                  !ippis_no ||
+                  ippis_no.length < 6 ||
+                  ippis_no.length > 6
+                }
                 mt='8'
                 py='6'
                 fontWeight='light'
@@ -210,6 +239,8 @@ const MainPage = ({
       )}
       {status === "processing" && (
         <Box
+          maxW='sm'
+          mx='auto'
           shadow='lg'
           mt='4'
           py='6'
@@ -218,20 +249,23 @@ const MainPage = ({
           border='1px'
           borderColor='gray.200'
           rounded='lg'>
-          <Text textAlign='center' textTransform='uppercase'>
-            application status: Processing
+          <Box display='flex' flexDir='column' mb='4' alignItems='center'>
+            <Image alt='' width={100} height={100} src='/thumbs.png' />
+            <Text textAlign='center' fontSize=''>
+              RECEIVED!
+            </Text>
+          </Box>
+          <Text textAlign='center'>
+            Check later to see if your loan advance request gets a green or red
+            flag
           </Text>
         </Box>
       )}
       {status === "approved" && (
-        <>
-          <Text textAlign='center' textTransform='uppercase'>
-            application status: Approved
-          </Text>
-          {loans &&
-            loans.map((loan) => <ApprovedLoanCard key={loan.id} {...loan} />)}
-        </>
-     
+        <Box>
+          {loan &&
+            loan.map((item) => <ApprovedLoanCard key={item.id} {...item} />)}
+        </Box>
       )}
     </Box>
   );

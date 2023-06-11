@@ -33,8 +33,9 @@ const LoanRequest = ({ loans }) => {
                     <LoanRequestCard
                       id={loan.id}
                       full_name={loan.full_name}
+                      location={loan.location}
                       phone_no={loan.phone_no}
-                      file_no={loan.file_no}
+                      ippis_no={loan.ippis_no}
                       amount={loan.amount}
                       created_at={loan.created_at}
                     />

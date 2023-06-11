@@ -62,7 +62,7 @@ const MobileDrawer = () => {
   }, [user]);
 
   return (
-    <Box display={{ base: "flex", sm: "none" }}>
+    <Box display={{ base: "flex", md: "none" }}>
       <IconButton
         onClick={onOpen}
         icon={<HiOutlineMenuAlt3 size={30} />}

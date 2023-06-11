@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -27,8 +28,9 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState(userEmail);
   const [full_name, setFullname] = useState("");
-  const [file_no, setFileno] = useState("");
+  const [ippis_no, setIPPISno] = useState("");
   const [phone_no, setPhoneno] = useState("");
+  const [location, setLocation] = useState('')
   const [loading, setLoading] = useState(false);
 
   const updateProfile = async () => {
@@ -36,13 +38,14 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
       setLoading(true);
       const { error } = await supabase
         .from("profiles")
-        .update({ email, full_name, file_no, phone_no })
+        .update({ email, full_name, ippis_no, phone_no, location })
         .eq("id", userId);
 
       if (error) {
         console.log("err msg", error.message);
         throw error;
-      } else {
+      }
+      if (!error) {
         router.reload(window.location.pathname);
       }
 
@@ -67,15 +70,15 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
     } finally {
       setLoading(false);
       onClose();
-      router.replace(router.asPath);
+      // router.replace(router.asPath);
     }
   };
 
   return (
-    <Box px='4'>
+    <Box px='4' maxW='sm' mx='auto'>
       <FrederickaHeader />
       <Text textAlign='center' color='gray.400'>
-        Update your profile data to continue.
+        Complete your registration data to continue.
       </Text>
       <Button
         w='full'
@@ -84,7 +87,7 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
         bg='#00abe1'
         py='6'
         onClick={onOpen}>
-        UPDATE PROFILE
+        COMPLETE REGISTRATION
       </Button>
       <Modal
         isCentered
@@ -93,39 +96,61 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
         onClose={onClose}>
         <ModalOverlay />
         <ModalContent mx='4' rounded='lg' overflow='hidden'>
-          <ModalHeader bg='green' color='white'>
+          <ModalHeader bg='blue.900' color='white'>
             Update Your Profile
           </ModalHeader>
           <ModalCloseButton color='red' />
           <ModalBody>
             <Box py='4'>
-              <FormControl mb='4'>
+              <FormControl mb='2'>
                 <FormLabel fontSize='sm' mb='0'>
                   Email
                 </FormLabel>
                 <Input value={email} isDisabled />
               </FormControl>
-              <FormControl mb='4' isRequired>
+              <FormControl mb='2' isRequired>
                 <FormLabel fontSize='sm' mb='0'>
                   Fullname
                 </FormLabel>
                 <Input
+                  type='text'
                   value={full_name}
                   onChange={(e) => setFullname(e.target.value)}
                   placeholder='Enter your fullname here'
                 />
+                {full_name.length < 6 && (
+                  <FormHelperText mt='0' color='red.500' fontSize='xs'>
+                    Name cannot be less than 6 characters
+                  </FormHelperText>
+                )}
               </FormControl>
-              <FormControl mb='4' isRequired>
+              <FormControl mb='2' isRequired>
                 <FormLabel fontSize='sm' mb='0'>
-                  File No.
+                 Zone/Centre
                 </FormLabel>
                 <Input
-                  value={file_no}
-                  onChange={(e) => setFileno(e.target.value)}
-                  placeholder='Enter your file no, here'
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder='Enter your Zone/Centre here'
                 />
+              
               </FormControl>
-              <FormControl mb='4' isRequired>
+              <FormControl mb='2' isRequired>
+                <FormLabel fontSize='sm' mb='0'>
+                  IPPIS No.
+                </FormLabel>
+                <Input
+                  value={ippis_no}
+                  onChange={(e) => setIPPISno(e.target.value)}
+                  placeholder='Enter your IPPIS no, here'
+                />
+                {ippis_no.length < 6 && (
+                  <FormHelperText mt='0' color='red.500' fontSize='xs'>
+                    IPPIS no. cannot be less than 6 digits
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl mb='2' isRequired>
                 <FormLabel fontSize='sm' mb='0'>
                   Phone No.
                 </FormLabel>
@@ -134,6 +159,16 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
                   onChange={(e) => setPhoneno(e.target.value)}
                   placeholder='Enter your file no, here'
                 />
+                {phone_no.length < 11 && (
+                  <FormHelperText mt='0' color='red.500' fontSize='xs'>
+                    Standard phone no is 11 digits
+                  </FormHelperText>
+                )}
+                {phone_no.length > 11 && (
+                  <FormHelperText mt='0' color='red.500' fontSize='xs'>
+                    Standard phone no is 11 digits
+                  </FormHelperText>
+                )}
               </FormControl>
             </Box>
           </ModalBody>
@@ -147,15 +182,15 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
               isLoading={loading}
               isDisabled={
                 !full_name.trim() ||
-                !file_no.trim() ||
-                full_name.length < 3 ||
-                file_no.length > 3 ||
+                !ippis_no.trim() ||
+                full_name.length < 6 ||
+                ippis_no.length > 6 ||
                 !phone_no.trim() ||
                 phone_no.length < 11 ||
                 phone_no.length > 11
               }
               variant='outline'
-              color='green'
+              color='blue.900'
               borderColor='green.200'>
               Update
             </Button>

@@ -1,18 +1,19 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const VerifyUserCard = ({
   full_name,
   id,
   email,
-  file_no,
+  verify,
+  // file_no,
   phone_no,
   // getData,
 }) => {
   const supabase = useSupabaseClient();
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const verifyUser = async () => {
@@ -20,11 +21,13 @@ const VerifyUserCard = ({
     try {
       const { error } = await supabase
         .from("profiles")
-        .update({ role: "verified" })
-        .eq("id", id);
+        .update({ verify: "verified" })
+        .eq("id", id)
+        .select();
       if (!error) {
-        router.replace(router.asPath)
+         router.replace(router.asPath)
         // getData();
+        console.log(error);
       }
     } catch (error) {
       console.log("error", error);
@@ -45,7 +48,7 @@ const VerifyUserCard = ({
       shadow='lg'>
       <Text>Name: {full_name}</Text>
       <Text>Email: {email}</Text>
-      <Text>File No: {file_no}</Text>
+      {/* <Text>File No: {file_no}</Text> */}
       <Text>Phone No: {phone_no}</Text>
       <Button
         onClick={verifyUser}

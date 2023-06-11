@@ -8,19 +8,18 @@ const ApprovedLoans = () => {
   const user = useUser();
   const [approved, setApproved] = useState(null);
 
-  useEffect(() => {
-    async function getApprovedLoans() {
-      const { data } = await supabase
-        .from("loans")
-        .select(
-          "id, full_name, phone_no, file_no, amount, created_at, status, approved_by, updated_at"
-        )
-        .range(0, 20)
-        .eq("status", "approved");
-      setApproved(data);
-    }
+  useEffect(() => {    
     getApprovedLoans();
   }, []);
+
+  async function getApprovedLoans() {
+    const { data } = await supabase
+      .from("loans")
+      .select()
+      .range(0, 20)
+      .eq("status", "approved");
+    setApproved(data);
+  }
 
   return (
     <Box>
@@ -49,8 +48,8 @@ const ApprovedLoans = () => {
                 spacing='10'
                 maxW='6xl'
                 mx='auto'>
-                {approved.map((item) => (
-                  <ApprovedLoanCard key={item.id} {...item} />
+                {approved.slice(0, 20).map((item) => (
+                  <ApprovedLoanCard key={item.id} {...item} reload={getApprovedLoans} />
                 ))}
               </SimpleGrid>
             </>
