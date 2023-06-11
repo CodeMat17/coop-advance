@@ -10,14 +10,13 @@ import {
   DrawerOverlay,
   IconButton,
   Stack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { fredericka } from "./FrederickaFont";
 
 const MobileDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,29 +65,29 @@ const MobileDrawer = () => {
       <IconButton
         onClick={onOpen}
         icon={<HiOutlineMenuAlt3 size={30} />}
-        bg='blue.900'
+        bg='blue.700'
+        color='#ec6d25'
+        shadow='2xl'
         _hover={{ bg: "blue.600" }}
       />
 
       <Drawer isOpen={isOpen} placement='right' onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth='1px'>
-            <div className={fredericka.className}>
-              <Text
-                bgGradient='linear(to-l, #f32ac2, #ffa101, green)'
-                bgClip='text'
-                fontSize='2xl'
-                fontWeight='bold'>
-                COOP Advance
-              </Text>
-            </div>
+          <DrawerCloseButton color='red' bg='red.100' />
+          <DrawerHeader borderBottomWidth='1px' bg='gray.100'>
+            <Image alt='' width={80} height={0} src='/logo.webp' />
           </DrawerHeader>
 
-          <DrawerBody>
+          <DrawerBody bg='blue.100'>
             <Stack spacing='24px' pt='6'>
-              <Button onClick={gotoHome} w='full' size='lg' color='green'>
+              <Button
+                onClick={gotoHome}
+                w='full'
+                size='lg'
+                bg='blue.700'
+                _hover={{ bg: "blue.800" }}
+                color='#ec6d25'>
                 HOME
               </Button>
               {checkIsAdmin &&
@@ -99,21 +98,31 @@ const MobileDrawer = () => {
                         onClick={gotoAdmin}
                         w='full'
                         size='lg'
-                        color='green'>
+                        bg='blue.700'
+                        _hover={{ bg: "blue.800" }}
+                        color='#ec6d25'>
                         ADMIN
                       </Button>
                     )}
                   </div>
                 ))}
 
-              <Button onClick={gotoRepay} w='full' size='lg' color='green'>
+              <Button
+                onClick={gotoRepay}
+                w='full'
+                size='lg'
+                bg='blue.700'
+                _hover={{ bg: "blue.800" }}
+                color='#ec6d25'>
                 REPAY LOAN
               </Button>
-            
             </Stack>
           </DrawerBody>
 
-          <DrawerFooter borderTopWidth='1px'>
+          <DrawerFooter
+            borderTopWidth='1px'
+            bg='gray.100'
+            justifyContent='space-between'>
             <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>
