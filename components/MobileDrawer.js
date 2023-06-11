@@ -65,7 +65,7 @@ const MobileDrawer = () => {
       <IconButton
         onClick={onOpen}
         icon={<HiOutlineMenuAlt3 size={30} />}
-        bg='blue.700'
+        bg='#086daf'
         color='#ec6d25'
         shadow='2xl'
         _hover={{ bg: "blue.600" }}

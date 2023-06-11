@@ -165,7 +165,8 @@ const SignIn = () => {
                   onClick={switchTabButt}
                   bg='blue.100'
                   rounded='full'
-                  px='1'
+                  px='2'
+                  py='1'
                   cursor='pointer'>
                   Sign Up
                 </chakra.span>
@@ -205,7 +206,8 @@ const SignIn = () => {
                   onClick={switchTabButt}
                   bg='blue.100'
                   rounded='full'
-                  px='1'
+                  px='2'
+                  py='1'
                   cursor='pointer'>
                   Sign In
                 </chakra.span>

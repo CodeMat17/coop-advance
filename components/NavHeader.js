@@ -10,7 +10,7 @@ const NavHeader = () => {
   const user = useUser();
   const userId = user?.id;
   const router = useRouter();
-
+  const [signingOut, setSigningOut] = useState(false);
   const [checkIsAdmin, setCheckIsAdmin] = useState([]);
 
   useEffect(() => {
@@ -27,17 +27,22 @@ const NavHeader = () => {
   }, [user]);
 
   const signOut = async () => {
+    setSigningOut(true);
     await supabaseClient.auth.signOut();
+    // router.reload()
+    setSigningOut(false);
     router.push("/");
   };
 
   return (
     <Box bg='#161f6d' pr='3' pos='sticky' top='0' zIndex='60'>
-      <Box maxW='6xl' mx='auto'
+      <Box
+        maxW='6xl'
+        mx='auto'
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        color='white' >
+        color='white'>
         <LogoWithFrederikaFont />
 
         <MobileDrawer />
@@ -114,7 +119,9 @@ const NavHeader = () => {
               // fontSize='lg'
               color='red'
               borderColor='red.600'
-              _hover={{ bg: "red.600", color: "white" }}>
+              _hover={{ bg: "red.600", color: "white" }}
+              isDisabled={signingOut}
+              loadingText='Signing Out'>
               Sign out
             </Button>
           )}
