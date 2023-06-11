@@ -35,7 +35,7 @@ const SignIn = () => {
       // },
     });
     if (error) {
-      setError(`${error}`);
+      setError(`${error.message}`);
     }
     if (!error) {
       setSubmitted(true);
@@ -52,7 +52,7 @@ const SignIn = () => {
       password,
     });
     if (error) {
-      setError(`${error}`);
+      setError(`${error.message}`);
     }
     if (!error) {
       router.reload();
