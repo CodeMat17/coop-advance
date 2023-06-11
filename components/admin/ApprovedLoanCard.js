@@ -10,9 +10,11 @@ const ApprovedLoanCard = ({
   file_no,
   phone_no,
   amount,
-  created_at, status,
+  created_at,
+  status,
   updated_at,
-  approved_by, reload,
+  approved_by,
+  reload,
 }) => {
   const supabase = useSupabaseClient();
   const user = useUser();
@@ -22,20 +24,22 @@ const ApprovedLoanCard = ({
   const clearLoan = async () => {
     setLoading(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("loans")
         .update({
           status: "repaid",
         })
-        .eq("user_id", user_id);
-   
-      if (!error) {
+        .eq("user_id", user_id)
+        .select();
+
+      if (data) {
         await supabase
           .from("profiles")
           .update({ status: "inactive" })
-          .eq("id", user_id);
+          .eq("id", user_id)
+          .select();
         // router.replace(router.asPath);
-        reload()
+        reload();
       }
     } catch (error) {
       console.log(error);

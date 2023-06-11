@@ -30,7 +30,7 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
   const [full_name, setFullname] = useState("");
   const [ippis_no, setIPPISno] = useState("");
   const [phone_no, setPhoneno] = useState("");
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
 
   const updateProfile = async () => {
@@ -39,7 +39,8 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
       const { error } = await supabase
         .from("profiles")
         .update({ email, full_name, ippis_no, phone_no, location })
-        .eq("id", userId);
+        .eq("id", userId)
+        .select();
 
       if (error) {
         console.log("err msg", error.message);
@@ -126,14 +127,13 @@ const UpdateProfileModal = ({ userEmail, userId }) => {
               </FormControl>
               <FormControl mb='2' isRequired>
                 <FormLabel fontSize='sm' mb='0'>
-                 Zone/Centre
+                  Zone/Centre
                 </FormLabel>
                 <Input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder='Enter your Zone/Centre here'
                 />
-              
               </FormControl>
               <FormControl mb='2' isRequired>
                 <FormLabel fontSize='sm' mb='0'>

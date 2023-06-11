@@ -25,7 +25,7 @@ const SignIn = () => {
   const [switchTab, setSwitchTab] = useState(true);
 
   const handleSignUp = async () => {
-     setError(null);
+    setError(null);
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -35,7 +35,7 @@ const SignIn = () => {
       // },
     });
     if (error) {
-        setError(`${error}`);
+      setError(`${error}`);
     }
     if (!error) {
       setSubmitted(true);
@@ -45,7 +45,7 @@ const SignIn = () => {
   };
 
   const handleSignIn = async () => {
-    setError(null)
+    setError(null);
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -55,7 +55,7 @@ const SignIn = () => {
       setError(`${error}`);
     }
     if (!error) {
-      router.reload()
+      router.reload();
       router.push("/");
     }
     setLoading(false);
@@ -115,6 +115,7 @@ const SignIn = () => {
             type='email'
             shadow='md'
             rounded='full'
+            py='6'
             placeholder='Enter your email address here'
           />
         </FormControl>
@@ -127,6 +128,7 @@ const SignIn = () => {
             type='password'
             shadow='md'
             rounded='full'
+            py='6'
             placeholder='Enter your password here'
           />
         </FormControl>

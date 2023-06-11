@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const LoanRequestCard = ({
-  id,
+  user_id,
   ippis_no,
   full_name,
   amount,
@@ -25,7 +25,7 @@ const LoanRequestCard = ({
       const { error } = await supabase
         .from("loans")
         .update({ status: "declined" })
-        .eq("id", id);
+        .eq("user_id", user_id);
       if (!error) {
         router.replace(router.asPath);
       }
@@ -39,15 +39,23 @@ const LoanRequestCard = ({
   const approveRequest = async () => {
     setApproving(true);
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("loans")
         .update({
           status: "approved",
           approved_by: user?.email,
           approved_on: new Date(),
         })
-        .eq("id", id);
-      if (!error) {
+        .eq("user_id", user_id)
+        .select();
+      if (data) {
+        await supabase
+          .from("profiles")
+          .update({
+            status: "approved",
+          })
+          .eq("id", user_id)
+          .select();
         router.replace(router.asPath);
       }
     } catch (error) {

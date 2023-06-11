@@ -31,7 +31,7 @@ const LoanRequest = ({ loans }) => {
                 <Box key={loan.id}>
                   {loan.status === "processing" && (
                     <LoanRequestCard
-                      id={loan.id}
+                      user_id={loan.user_id}
                       full_name={loan.full_name}
                       location={loan.location}
                       phone_no={loan.phone_no}

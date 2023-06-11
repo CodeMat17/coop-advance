@@ -66,7 +66,7 @@ const MainPage = ({
 
     if (ippisno === ippis_no) {
       try {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from("loans")
           .upsert({
             user_id: id,
@@ -75,10 +75,13 @@ const MainPage = ({
             full_name,
           })
           .select();
-        await supabase
-          .from("profiles")
-          .update({ status: "processing" })
-          .eq("id", id);
+        if (data) {
+          await supabase
+            .from("profiles")
+            .update({ status: "processing" })
+            .eq("id", id)
+            .select();
+        }
 
         if (error) {
           throw error;
