@@ -8,7 +8,7 @@ const ApprovedLoans = () => {
   const user = useUser();
   const [approved, setApproved] = useState(null);
 
-  useEffect(() => {    
+  useEffect(() => {
     getApprovedLoans();
   }, []);
 
@@ -17,6 +17,7 @@ const ApprovedLoans = () => {
       .from("loans")
       .select()
       .range(0, 20)
+      .order("created_at", { ascending: false })
       .eq("status", "approved");
     setApproved(data);
   }
@@ -49,7 +50,11 @@ const ApprovedLoans = () => {
                 maxW='6xl'
                 mx='auto'>
                 {approved.slice(0, 20).map((item) => (
-                  <ApprovedLoanCard key={item.id} {...item} reload={getApprovedLoans} />
+                  <ApprovedLoanCard
+                    key={item.id}
+                    {...item}
+                    reload={getApprovedLoans}
+                  />
                 ))}
               </SimpleGrid>
             </>

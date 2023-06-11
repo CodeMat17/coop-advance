@@ -31,7 +31,7 @@ const ApprovedLoanCard = ({ amount, approved_on }) => {
       <Box bg='green.500' p='4' color='white'>
         <Text>Amount: {formattedAmount}</Text>
         <Text>Approved On: {dayjs(approved_on).format(" MMM D, YYYY")}</Text>
-        <Text>Loan Duration: 3 Months from approval date</Text>
+        <Text>Duration: 3 Months from approval date</Text>
         <Text textAlign='center' mt=''>
           😋{" "}
           <chakra.span fontStyle='italic' color='pink.700'>
